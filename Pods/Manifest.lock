@@ -1,0 +1,27 @@
+PODS:
+  - Alamofire (3.4.1)
+  - ExpandingMenu (0.1.3)
+  - GSImageViewerController (1.1.1)
+  - HanekeSwift (0.10.1)
+  - SideMenu (1.1.9)
+  - SwiftSpinner (0.9.5)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.4)
+  - ExpandingMenu (~> 0.1)
+  - GSImageViewerController
+  - HanekeSwift
+  - SideMenu
+  - SwiftSpinner
+
+SPEC CHECKSUMS:
+  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
+  ExpandingMenu: f608c37679bcfe59fd05145b42bcacbe3aa28db5
+  GSImageViewerController: 1fd7ff9210bca2eaaeb89811c55230b575377143
+  HanekeSwift: 08e47d3d0f2899ec58e5d257beba0de619aca9e8
+  SideMenu: e4ecb0f1061e19230e53079edb2b300081446f80
+  SwiftSpinner: c6585a0ae5c67eb33e737695cce88f0262008cce
+
+PODFILE CHECKSUM: 45ada82bfd328633bcd4833887c2af3350e13f35
+
+COCOAPODS: 1.0.1
