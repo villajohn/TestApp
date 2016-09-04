@@ -17,11 +17,12 @@
 		762AC7A71D78A05600054680 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7A61D78A05600054680 /* Network.swift */; };
 		762AC7AB1D78A09B00054680 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7AA1D78A09B00054680 /* Global.swift */; };
 		762AC7B01D78DAE600054680 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7AF1D78DAE600054680 /* MainTableViewCell.swift */; };
-		762AC7B31D78DCF300054680 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7B21D78DCF300054680 /* Product.swift */; };
 		762AC7B71D792F9500054680 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7B61D792F9500054680 /* MenuViewController.swift */; };
 		762AC7BC1D794F7D00054680 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7BB1D794F7D00054680 /* DetailViewController.swift */; };
 		762AC7BE1D795FD400054680 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 762AC7BD1D795FD400054680 /* MapKit.framework */; };
-		762AC7C01D7960CD00054680 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7BF1D7960CD00054680 /* Capital.swift */; };
+		762AC7C21D79A67F00054680 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7C11D79A67F00054680 /* Location.swift */; };
+		762AC7C41D79ADC800054680 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7C31D79ADC800054680 /* Business.swift */; };
+		762AC7CB1D7AA74700054680 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7CA1D7AA74700054680 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,11 +38,12 @@
 		762AC7A61D78A05600054680 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		762AC7AA1D78A09B00054680 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		762AC7AF1D78DAE600054680 /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
-		762AC7B21D78DCF300054680 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		762AC7B61D792F9500054680 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		762AC7BB1D794F7D00054680 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		762AC7BD1D795FD400054680 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		762AC7BF1D7960CD00054680 /* Capital.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
+		762AC7C11D79A67F00054680 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		762AC7C31D79ADC800054680 /* Business.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
+		762AC7CA1D7AA74700054680 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		BDFC1BB6E24375F5B11C571B /* Pods-ClickTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClickTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClickTest/Pods-ClickTest.debug.xcconfig"; sourceTree = "<group>"; };
 		F439636616A3AEDF21E5034D /* Pods_ClickTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClickTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				762AC7BA1D794F6D00054680 /* Detail */,
+				762AC7C91D7AA73800054680 /* Map */,
 				762AC7B51D792F8400054680 /* Menu */,
 				762AC7AE1D78D59100054680 /* Main */,
 				762AC7A31D789FC000054680 /* Utils */,
@@ -134,8 +137,8 @@
 		762AC7B11D78DCD700054680 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				762AC7B21D78DCF300054680 /* Product.swift */,
-				762AC7BF1D7960CD00054680 /* Capital.swift */,
+				762AC7C11D79A67F00054680 /* Location.swift */,
+				762AC7C31D79ADC800054680 /* Business.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -154,6 +157,14 @@
 				762AC7BB1D794F7D00054680 /* DetailViewController.swift */,
 			);
 			name = Detail;
+			sourceTree = "<group>";
+		};
+		762AC7C91D7AA73800054680 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				762AC7CA1D7AA74700054680 /* MapViewController.swift */,
+			);
+			name = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,15 +295,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				762AC7CB1D7AA74700054680 /* MapViewController.swift in Sources */,
 				762AC7BC1D794F7D00054680 /* DetailViewController.swift in Sources */,
+				762AC7C21D79A67F00054680 /* Location.swift in Sources */,
 				7621176C1D789C6F00618282 /* ViewController.swift in Sources */,
 				7621176A1D789C6F00618282 /* AppDelegate.swift in Sources */,
 				762AC7A71D78A05600054680 /* Network.swift in Sources */,
-				762AC7C01D7960CD00054680 /* Capital.swift in Sources */,
 				762AC7AB1D78A09B00054680 /* Global.swift in Sources */,
 				762AC7B01D78DAE600054680 /* MainTableViewCell.swift in Sources */,
 				762AC7A51D789FCC00054680 /* Constants.swift in Sources */,
-				762AC7B31D78DCF300054680 /* Product.swift in Sources */,
+				762AC7C41D79ADC800054680 /* Business.swift in Sources */,
 				762AC7B71D792F9500054680 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

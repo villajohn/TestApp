@@ -10,45 +10,40 @@ import UIKit
 import SwiftSpinner
 import Haneke
 import SideMenu
+import MapKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
-    var itemList = [Product]()
+    var itemList = [Business]()
     
     @IBOutlet weak var tableView: UITableView!
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredItems = [Product]()
+    var filteredItems = [Business]()
+    
+    let locationManager = CLLocationManager()
+    
+    var userLocation = CLLocation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        SideMenuManager.menuLeftNavigationController = storyboard!.instantiateViewControllerWithIdentifier("MenuNavigation") as? UISideMenuNavigationController
         
-        SideMenuManager.menuAddPanGestureToPresent(toView: self.navigationController!.navigationBar)
-        SideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
-        
-        SideMenuManager.menuPresentMode = .MenuDissolveIn
-        SideMenuManager.menuShadowOpacity = 0.5
-        SideMenuManager.menuFadeStatusBar = true
-        SideMenuManager.menuWidth = UIScreen.mainScreen().bounds.width
-            
-        //Search functions
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-        
-        self.navigationController?.navigationBar.barTintColor = RED_COLOR
-        getData()
+        locationManager.delegate = self
+        if #available(iOS 9.0, *) {
+            locationManager.requestLocation()
+        }
+        setupView()
     }
     
     func getData() {
-        SwiftSpinner.show("cargando...")
         let parameters = [] as AnyObject
         let urlMethod = "\(URL_SERVER)"
         makeRequest(urlMethod, metodo: "GET", params: parameters) {
             response, error in
             if let ans = response {
+                let oneDecimalNumber = NSNumberFormatter()
+                oneDecimalNumber.numberStyle = .DecimalStyle
                 if ans.count > 0 {
                     for i in 0 ..< ans.count {
                         let categoria  = ans[i]["categorias"] as! String
@@ -59,11 +54,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         let rating     = Int(ans[i]["rating"] as! String)
                         let ubicacion  = ans[i]["ubicacion_txt"] as! String
                         let urlDetalle = ans[i]["url_detalle"] as! String
-                        let detail = Product(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false)
+                        
+                        var distanceTo = 0.0
+                        if ubicacion.isEmpty == false {
+                            let coordeateArray = ubicacion.characters.split{$0 == ","}.map(String.init)
+                            let coordinate = CLLocation(latitude: Double(coordeateArray[0] as String)!, longitude: Double(coordeateArray[1] as String)!)
+                            let distance = coordinate.distanceFromLocation(self.userLocation)
+                            //let distanceString = String(format: "%.1f", distance)
+                            distanceTo = Double(String(format: "%.1f", distance))!
+                        }
+                        let detail = Business(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false, distance: distanceTo)
                         self.itemList.append(detail)
                     }
+                    
+                    self.itemList.sortInPlace({ $0.distance < $1.distance })
                     self.refreshTable()
-
                 } else {
                     globalMessage(APP_NAME, msgBody: "No se han encontrado resultados", delegate: nil, self: self)
                 }
@@ -85,7 +90,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MainCell") as! MainTableViewCell
         
-        let itemRow : Product
+        let itemRow : Business
         if searchController.active && searchController.searchBar.text != "" {
             itemRow = filteredItems[indexPath.row]
         } else {
@@ -93,7 +98,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         cell.nameLabel.text  = itemRow.nombre
-        cell.priceLabel.text = "\(itemRow.domicilio)"
+        cell.priceLabel.text = "$ \(itemRow.domicilio)"
+        cell.kmLabel.text    = "\(itemRow.distance) Km"
+        
+        //rating
+        switch itemRow.rating {
+        case 1:
+            cell.rank1.image = UIImage(named: "star-filled.png")
+        case 2:
+            cell.rank1.image = UIImage(named: "star-filled.png")
+            cell.rank2.image = UIImage(named: "star-filled.png")
+        case 3:
+            cell.rank1.image = UIImage(named: "star-filled.png")
+            cell.rank2.image = UIImage(named: "star-filled.png")
+            cell.rank3.image = UIImage(named: "star-filled.png")
+        case 4:
+            cell.rank1.image = UIImage(named: "star-filled.png")
+            cell.rank2.image = UIImage(named: "star-filled.png")
+            cell.rank3.image = UIImage(named: "star-filled.png")
+            cell.rank4.image = UIImage(named: "star-filled.png")
+        case 5:
+            cell.rank1.image = UIImage(named: "star-filled.png")
+            cell.rank2.image = UIImage(named: "star-filled.png")
+            cell.rank3.image = UIImage(named: "star-filled.png")
+            cell.rank4.image = UIImage(named: "star-filled.png")
+            cell.rank5.image = UIImage(named: "star-filled.png")
+        default:
+            cell.rank1.image = UIImage(named: "star.png")
+        }
         
         if itemRow.favorite == true {
             cell.favoriteButton.imageView?.image = UIImage(named: "icon-heart-red.png")
@@ -112,13 +144,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func actionFavorite(sender: UIButton) {
         itemList[sender.tag].favorite = true
 
-        //print(sender.tag)
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let main = self.storyboard?.instantiateViewControllerWithIdentifier("Detail") as! DetailViewController
+        main.detailSelected = itemList[indexPath.row]
+        var newList = itemList
+        newList.removeAtIndex(indexPath.row)
+        main.secundaryLocations = newList
         self.navigationController?.pushViewController(main, animated: true)
     }
     
@@ -163,7 +198,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     //Search Bar
@@ -172,6 +206,47 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return product.nombre.lowercaseString.containsString(searchText.lowercaseString)
         }
         tableView.reloadData()
+    }
+    
+    func setupView() {
+        //Side Menu Options
+        createSideMenu(self, story: storyboard!)
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
+        let image = UIImage(named: "logo-small.png")
+        self.navigationItem.titleView = UIImageView(image: image)
+        
+        self.navigationController?.navigationBar.barTintColor = RED_COLOR
+        
+        //Search functions
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    //MARK: Location Delegates
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            userLocation = location
+            print("Encotnrado user's location: \(location)")
+            getData()
+            /*
+            for i in 0 ..< itemList.count {
+                if itemList[i].ubicacion.isEmpty == false {
+                    let coordeateArray = itemList[i].ubicacion.characters.split{$0 == ","}.map(String.init)
+                    let coordenate = CLLocation(latitude: Double(coordeateArray[0] as String)!, longitude: Double(coordeateArray[1] as String)!)
+                    print("Pepe: \(coordenate.distanceFromLocation(location))")
+                }
+            }*/
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("Failed to find user's location: \(error.localizedDescription)")
     }
 
 

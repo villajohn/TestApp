@@ -20,6 +20,7 @@ class MainTableViewCell: UITableViewCell {
     @IBOutlet weak var rank4: UIImageView!
     @IBOutlet weak var rank5: UIImageView!
     @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var kmLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

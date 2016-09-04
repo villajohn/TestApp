@@ -1,14 +1,14 @@
 //
-//  Product.swift
+//  Business.swift
 //  ClickTest
 //
-//  Created by Jhon Villalobos on 9/1/16.
+//  Created by Jhon Villalobos on 9/2/16.
 //  Copyright © 2016 Jhon Villalobos. All rights reserved.
 //
 
 import Foundation
 
-class Product {
+class Business {
     var categoria  : String!
     var domicilio  : Double!
     var urlDetalle : String!
@@ -18,8 +18,9 @@ class Product {
     var tiempo     : Int!
     var ubicacion  : String!
     var favorite   : Bool!
+    var distance   : Double!
     
-    init(categoria: String, domicilio: Double, urlDetalle: String, picture: String!, nombre: String, rating: Int, tiempo: Int, ubicacion: String, favorite: Bool) {
+    init(categoria: String, domicilio: Double, urlDetalle: String, picture: String!, nombre: String, rating: Int, tiempo: Int, ubicacion: String, favorite: Bool, distance: Double) {
         self.categoria  = categoria
         self.domicilio  = domicilio
         self.urlDetalle = urlDetalle
@@ -29,5 +30,6 @@ class Product {
         self.tiempo     = tiempo
         self.ubicacion  = ubicacion
         self.favorite   = favorite
+        self.distance   = distance
     }
 }
