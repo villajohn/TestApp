@@ -3,6 +3,7 @@ PODS:
   - ExpandingMenu (0.1.3)
   - GSImageViewerController (1.1.1)
   - HanekeSwift (0.10.1)
+  - Locksmith (2.0.8)
   - SideMenu (1.1.9)
   - SwiftSpinner (0.9.5)
 
@@ -11,6 +12,7 @@ DEPENDENCIES:
   - ExpandingMenu (~> 0.1)
   - GSImageViewerController
   - HanekeSwift
+  - Locksmith
   - SideMenu
   - SwiftSpinner
 
@@ -19,9 +21,10 @@ SPEC CHECKSUMS:
   ExpandingMenu: f608c37679bcfe59fd05145b42bcacbe3aa28db5
   GSImageViewerController: 1fd7ff9210bca2eaaeb89811c55230b575377143
   HanekeSwift: 08e47d3d0f2899ec58e5d257beba0de619aca9e8
+  Locksmith: a8ed41ac4c06506ea8cb199d8ec8a8d3d108eb2a
   SideMenu: e4ecb0f1061e19230e53079edb2b300081446f80
   SwiftSpinner: c6585a0ae5c67eb33e737695cce88f0262008cce
 
-PODFILE CHECKSUM: 9b25eec8319b874b405dcefc169fadcdc4213855
+PODFILE CHECKSUM: b0a77d1b0b352b989b9f4d6db84581536f488f45
 
 COCOAPODS: 1.0.1

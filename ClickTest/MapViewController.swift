@@ -34,7 +34,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     //MARK: Map Delegates
     func setupMap() {
         mapView.delegate = self
-        if locSelected != nil {
+        if locSelected != nil && locSelected.ubicacion.isEmpty == false {
             let span = MKCoordinateSpanMake(0.075, 0.075)
             let coordeateArray = locSelected.ubicacion.characters.split{$0 == ","}.map(String.init)
             let detailLocation = Location(title: locSelected.nombre, coordinate: CLLocationCoordinate2D(latitude: Double(coordeateArray[0] as String)!, longitude: Double(coordeateArray[1] as String)!), info: "", selected: true)

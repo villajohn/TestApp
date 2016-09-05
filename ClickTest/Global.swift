@@ -21,7 +21,7 @@ func globalMessage(msgtitle: NSString, msgBody: NSString, delegate: AnyObject?, 
 }
 
 func createSideMenu(self: UIViewController, story: UIStoryboard) {
-    SideMenuManager.menuLeftNavigationController = story.instantiateViewControllerWithIdentifier("MenuNavigation") as? UISideMenuNavigationController
+    SideMenuManager.menuRightNavigationController = story.instantiateViewControllerWithIdentifier("MenuNavigation") as? UISideMenuNavigationController
     
     SideMenuManager.menuAddPanGestureToPresent(toView: self.navigationController!.navigationBar)
     SideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
@@ -30,4 +30,16 @@ func createSideMenu(self: UIViewController, story: UIStoryboard) {
     SideMenuManager.menuShadowOpacity = 0.5
     SideMenuManager.menuFadeStatusBar = true
     SideMenuManager.menuWidth = UIScreen.mainScreen().bounds.width
+}
+
+//Draw the line at bottom of the button
+func createLineButton(sender: UIButton) {
+    let bottomLine = CALayer()
+    let width = CGFloat(2.0)
+    bottomLine.borderColor = RED_COLOR.CGColor
+    bottomLine.frame = CGRect(x: 0.0, y: sender.frame.size.height - width, width: sender.frame.size.width, height: 1.0)
+    bottomLine.borderWidth = width
+    sender.layer.addSublayer(bottomLine)
+    sender.layer.masksToBounds = true
+    sender.setTitleColor(RED_COLOR, forState: .Normal)
 }

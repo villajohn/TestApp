@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Locksmith.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ClickTest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,12 +57,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>072C87817D947EE633FE0FCF2F42B204</key>
+		<key>0BF762BAE31E798FD9A03ADEFBBCCBCB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>15F8F5AF57E33DB78A493954BFB00980</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1AE5786437FD93DE866582B9783BF7FC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>1FB7C9F249AD65C80987D84A86575915</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>22339AEB901D4A3EB6AD14824E211806</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,27 +92,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>371672E90E28A04164A01524751B47D2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3DA009CB7D214AAD5F65AC43D5ED99B4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>79C040AFDDCE1BCBF6D8B5EB0B85887F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9EDB241CA84062D18B45D12341F01D5B</key>
+		<key>92943306EC8070DF9CD02ECD505D2CD5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E4F289164DD03F136770E4268977EF9F</key>
+		<key>9EDB241CA84062D18B45D12341F01D5B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

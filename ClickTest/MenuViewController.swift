@@ -32,6 +32,27 @@ class MenuViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        backItem.tintColor = UIColor.whiteColor()
+        navigationItem.backBarButtonItem = backItem
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissMenu))
+        self.view.addGestureRecognizer(gesture)
+        
+    }
+    
+    func dismissMenu() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    //MARK: Segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowFavorites" {
+            let destination = segue.destinationViewController as! ViewController
+            destination.isFavorites = true
+        }
     }
 
     override func didReceiveMemoryWarning() {

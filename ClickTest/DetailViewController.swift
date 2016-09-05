@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import GSImageViewerController
+import Locksmith
 
 class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
@@ -24,6 +25,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     @IBOutlet weak var detailButton: UIButton!
     @IBOutlet weak var commentsButton: UIButton!
     @IBOutlet weak var imageButton: UIButton!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     var detailSelected : Business! = nil
     var secundaryLocations : [Business]! = nil
@@ -42,8 +44,6 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         loadDetails()
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         locationManager.location
-        
-        
     }
     
     func loadDetails() {
@@ -57,11 +57,15 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         })
         
         titleLabel.text  = detailSelected.nombre
-        tiempoLabel.text = "\(detailSelected.tiempo)"
-        precioLabel.text = "\(detailSelected.domicilio)"
+        tiempoLabel.text = "\(detailSelected.tiempo) minutos"
+        precioLabel.text = "$ \(detailSelected.domicilio)"
         calculateRank(detailSelected.rating)
         createLineButton(detailButton)
-
+        
+        if Locksmith.loadDataForUserAccount(detailSelected.nombre) != nil {
+            favoriteButton.setImage(UIImage(named: "heart-red"), forState: .Normal)
+        }
+            
         if detailSelected.ubicacion.isEmpty == false {
             let span = MKCoordinateSpanMake(0.075, 0.075)
             let coordeateArray = detailSelected.ubicacion.characters.split{$0 == ","}.map(String.init)
@@ -114,23 +118,11 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         sender.image = UIImage(named: "star-filled.png")
     }
     
-    //Draw the line at bottom of the button
-    func createLineButton(sender: UIButton) {
-        let bottomLine = CALayer()
-        let width = CGFloat(2.0)
-        bottomLine.borderColor = RED_COLOR.CGColor
-        bottomLine.frame = CGRect(x: 0.0, y: sender.frame.size.height - width, width: sender.frame.size.width, height: sender.frame.size.height)
-        bottomLine.borderWidth = width
-        sender.layer.addSublayer(bottomLine)
-        sender.layer.masksToBounds = true
-        sender.setTitleColor(RED_COLOR, forState: .Normal)
-    }
-    
     func unsetRank(sender: UIImageView) {}
     
     func setupLocationManager() {
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation //kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         if #available(iOS 9.0, *) {
@@ -143,8 +135,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         if annotation is MKUserLocation {
             return nil
         }
-        
-        //return annotationView
+
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
         pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -166,7 +157,6 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: CGPointZero, size: smallSquare))
         button.setBackgroundImage(UIImage(named: "icon-car.png"), forState: .Normal)
-        //button.addTarget(self, action: #selector(self.getDirections), forControlEvents: .TouchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
@@ -220,6 +210,11 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     func setupView() {
         createSideMenu(self, story: storyboard!)
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
         self.navigationController?.navigationBar.barTintColor = RED_COLOR
         let image = UIImage(named: "logo-small.png")
         self.navigationItem.titleView = UIImageView(image: image)
@@ -238,6 +233,31 @@ class DetailViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         main.locSelected = detailSelected
         main.locList = secundaryLocations
         self.navigationController?.presentViewController(main, animated: true, completion: nil)
+    }
+    
+    @IBAction func favoriteAction(sender: AnyObject) {
+        if Locksmith.loadDataForUserAccount(detailSelected.nombre) != nil {
+            do {
+                try Locksmith.deleteDataForUserAccount(detailSelected.nombre)
+                favoriteButton.setImage(UIImage(named: "heart_empty"), forState: .Normal)
+            } catch {
+                globalMessage("Error", msgBody: "No es posible procesar la petición, intente de nuevo", delegate: nil, self: self)
+            }
+        } else {
+            do {
+                try Locksmith.saveData(["name": detailSelected.nombre], forUserAccount: detailSelected.nombre)
+                favoriteButton.setImage(UIImage(named: "heart-red"), forState: .Normal)
+            } catch {
+                globalMessage("Error", msgBody: "No es posible procesar la petición, intente de nuevo", delegate: nil, self: self)
+            }
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowComments" {
+            let destination = segue.destinationViewController as! CommentsViewController
+            destination.detailSelected = detailSelected
+        }
     }
     
     

@@ -11,15 +11,24 @@ import SwiftSpinner
 import Haneke
 import SideMenu
 import MapKit
+import Locksmith
+import ExpandingMenu
 
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     var itemList = [Business]()
+    var categories = [String]()
+    
+    var isFavorites  : Bool! = false
+    var isCategories : Bool! = false
+    var categorySelected : String!
     
     @IBOutlet weak var tableView: UITableView!
     let searchController = UISearchController(searchResultsController: nil)
     var filteredItems = [Business]()
+    
+    var refreshControl: UIRefreshControl!
     
     let locationManager = CLLocationManager()
     
@@ -28,15 +37,47 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         locationManager.delegate = self
         if #available(iOS 9.0, *) {
             locationManager.requestLocation()
         }
+        
+        addMenu()
+        loadRefreshControl()
         setupView()
+        
+    }
+    
+    func addMenu() {
+        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
+        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPointZero, size: menuButtonSize), centerImage: UIImage(named: "chooser-button-tab")!, centerHighlightedImage: UIImage(named: "chooser-button-tab-highlighted")!)
+        menuButton.center = CGPointMake(self.view.bounds.width - 32.0, self.view.bounds.height - 72.0)
+        view.addSubview(menuButton)
+        
+        let distanceOption = ExpandingMenuItem(size: menuButtonSize, title: "Distancia", image: UIImage(named: "icon-distance")!, highlightedImage: UIImage(named: "icon-distance")!, backgroundImage: UIImage(named: "chooser-moment-button"), backgroundHighlightedImage: UIImage(named: "chooser-moment-button-highlighted")) { () -> Void in
+            self.orderByDistance()
+        }
+        
+        let priceOption = ExpandingMenuItem(size: menuButtonSize, title: "Precio", image: UIImage(named: "icon-precio")!, highlightedImage: UIImage(named: "icon-precio")!, backgroundImage: UIImage(named: "chooser-moment-button"), backgroundHighlightedImage: UIImage(named: "chooser-moment-button-highlighted")) { () -> Void in
+            self.orderByPrice()
+        }
+        
+        menuButton.allowSounds = false
+        menuButton.addMenuItems([distanceOption, priceOption])
+    }
+    
+    func orderByDistance() {
+        self.itemList.sortInPlace({ $0.distance < $1.distance })
+        refreshTable()
+    }
+    
+    func orderByPrice() {
+        self.itemList.sortInPlace({ $0.domicilio < $1.domicilio })
+        refreshTable()
     }
     
     func getData() {
+        SwiftSpinner.show("ClickTest")
         let parameters = [] as AnyObject
         let urlMethod = "\(URL_SERVER)"
         makeRequest(urlMethod, metodo: "GET", params: parameters) {
@@ -44,6 +85,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if let ans = response {
                 let oneDecimalNumber = NSNumberFormatter()
                 oneDecimalNumber.numberStyle = .DecimalStyle
+                self.itemList.removeAll()
+                self.categories.removeAll()
                 if ans.count > 0 {
                     for i in 0 ..< ans.count {
                         let categoria  = ans[i]["categorias"] as! String
@@ -60,19 +103,42 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                             let coordeateArray = ubicacion.characters.split{$0 == ","}.map(String.init)
                             let coordinate = CLLocation(latitude: Double(coordeateArray[0] as String)!, longitude: Double(coordeateArray[1] as String)!)
                             let distance = coordinate.distanceFromLocation(self.userLocation)
-                            //let distanceString = String(format: "%.1f", distance)
                             distanceTo = Double(String(format: "%.1f", distance))!
                         }
-                        let detail = Business(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false, distance: distanceTo)
-                        self.itemList.append(detail)
+                        
+                        self.checkCategory(categoria)
+                        
+                        var detail : Business!
+                        if self.isCategories == true {
+                            if categoria == self.categorySelected {
+                                detail = Business(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false, distance: distanceTo)
+                            }
+                        } else if self.isFavorites == true {
+                            if Locksmith.loadDataForUserAccount(nombre) != nil {
+                                detail = Business(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false, distance: distanceTo)
+                            }
+                        } else {
+                            detail = Business(categoria: categoria, domicilio: domicilio!, urlDetalle: urlDetalle, picture: logo, nombre: nombre, rating: rating!, tiempo: tiempo!, ubicacion: ubicacion, favorite: false, distance: distanceTo)
+                        }
+                        
+                        if detail != nil {
+                            self.itemList.append(detail)
+                        }
                     }
                     
-                    self.itemList.sortInPlace({ $0.distance < $1.distance })
-                    self.refreshTable()
+                    if self.itemList.count > 0 {
+                        self.itemList.sortInPlace({ $0.distance < $1.distance })
+                        do {
+                            try Locksmith.updateData(["categories": self.categories], forUserAccount: "categories")
+                        } catch {
+                            globalMessage(APP_NAME, msgBody: "No es posible guardar las categorias", delegate: nil, self: self)
+                        }
+                    }
                 } else {
                     globalMessage(APP_NAME, msgBody: "No se han encontrado resultados", delegate: nil, self: self)
                 }
-                SwiftSpinner.hide()
+                self.refreshTable()
+                //SwiftSpinner.hide()
             } else {
                 SwiftSpinner.hide()
                 globalMessage(APP_NAME, msgBody: NETWORK_MESSAGE, delegate: nil, self: self)
@@ -80,11 +146,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func checkCategory(category: String) {
+        for i in 0 ..< categories.count {
+            if categories[i] == category {
+                return
+            }
+        }
+        categories.append(category)
+    }
+    
     //MARK: Table Delegate
     func refreshTable() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
+        if refreshControl.refreshing {
+            refreshControl.endRefreshing()
+        }
+        SwiftSpinner.hide()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -127,25 +206,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.rank1.image = UIImage(named: "star.png")
         }
         
-        if itemRow.favorite == true {
-            cell.favoriteButton.imageView?.image = UIImage(named: "icon-heart-red.png")
-        }
-        
-        cell.favoriteButton.tag = indexPath.row
-        cell.favoriteButton.addTarget(self, action: #selector(self.actionFavorite(_:)), forControlEvents: .TouchUpInside)
-        
         cell.itemImage.hnk_setImageFromURL(NSURL(string: itemRow.picture)!, placeholder: UIImage(named: "fastfood.jpg"), format: nil, failure: nil, success: { (image) -> Void in
             cell.itemImage.image = image
         })
         
         return cell
-    }
-    
-    func actionFavorite(sender: UIButton) {
-        itemList[sender.tag].favorite = true
-
-        tableView.delegate = self
-        tableView.dataSource = self
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -163,7 +228,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             numSections = 1
         } else {
             let noDataLabel: UILabel = UILabel.init(frame: CGRectMake(0, 0, tableView.bounds.size.width, tableView.bounds.size.height))
-            noDataLabel.text = "No información para mostrar"
+            if isFavorites == true {
+                noDataLabel.text = "No hay resultados como Favoritos"
+            } else if isCategories == true {
+                noDataLabel.text = "No hay resultados en la categoría \n \(categorySelected)"
+            } else {
+                noDataLabel.text = "No existe información para mostrar"
+            }
             noDataLabel.numberOfLines = 6
             noDataLabel.textColor = UIColor.redColor()
             noDataLabel.textAlignment = .Center
@@ -209,6 +280,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func setupView() {
+        SwiftSpinner.show("ClickTest...")
+        
         //Side Menu Options
         createSideMenu(self, story: storyboard!)
         
@@ -232,21 +305,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             userLocation = location
-            print("Encotnrado user's location: \(location)")
             getData()
-            /*
-            for i in 0 ..< itemList.count {
-                if itemList[i].ubicacion.isEmpty == false {
-                    let coordeateArray = itemList[i].ubicacion.characters.split{$0 == ","}.map(String.init)
-                    let coordenate = CLLocation(latitude: Double(coordeateArray[0] as String)!, longitude: Double(coordeateArray[1] as String)!)
-                    print("Pepe: \(coordenate.distanceFromLocation(location))")
-                }
-            }*/
         }
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        globalMessage(APP_NAME, msgBody: "No ha sido posible obtener tu ubicación. Por favor intenta de nuevo", delegate: nil, self: self)
         print("Failed to find user's location: \(error.localizedDescription)")
+    }
+    
+    func loadRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = UIColor.redColor()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to update data")
+        refreshControl.addTarget(self, action: #selector(self.getData), forControlEvents: .ValueChanged)
+        self.tableView.addSubview(refreshControl)
     }
 
 
@@ -258,3 +331,13 @@ extension ViewController: UISearchResultsUpdating {
     }
 }
 
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.ocultarTeclado))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func ocultarTeclado() {
+        view.endEditing(true)
+    }
+}

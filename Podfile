@@ -12,5 +12,6 @@ target 'ClickTest' do
   pod 'SideMenu'
   pod 'ExpandingMenu', '~> 0.1'
   pod 'GSImageViewerController'
+  pod 'Locksmith'
   
 end

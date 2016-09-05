@@ -23,6 +23,15 @@
 		762AC7C21D79A67F00054680 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7C11D79A67F00054680 /* Location.swift */; };
 		762AC7C41D79ADC800054680 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7C31D79ADC800054680 /* Business.swift */; };
 		762AC7CB1D7AA74700054680 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7CA1D7AA74700054680 /* MapViewController.swift */; };
+		762AC7D01D7CA41500054680 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7CF1D7CA41500054680 /* CommentsViewController.swift */; };
+		762AC7D21D7CA96E00054680 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7D11D7CA96E00054680 /* Comment.swift */; };
+		762AC7D51D7CB81100054680 /* NewCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7D41D7CB81100054680 /* NewCommentViewController.swift */; };
+		762AC7D71D7CC78D00054680 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7D61D7CC78D00054680 /* CommentsTableViewCell.swift */; };
+		762AC7DA1D7CCAA600054680 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7D91D7CCAA600054680 /* CategoriesViewController.swift */; };
+		762AC7DC1D7CCAC400054680 /* CategoriesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7DB1D7CCAC400054680 /* CategoriesViewCell.swift */; };
+		762AC7DE1D7CCFB700054680 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7DD1D7CCFB700054680 /* Category.swift */; };
+		762AC7E11D7D21C700054680 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7E01D7D21C700054680 /* AboutViewController.swift */; };
+		762AC7E61D7D461500054680 /* InitialVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762AC7E51D7D461500054680 /* InitialVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +53,15 @@
 		762AC7C11D79A67F00054680 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		762AC7C31D79ADC800054680 /* Business.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		762AC7CA1D7AA74700054680 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		762AC7CF1D7CA41500054680 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		762AC7D11D7CA96E00054680 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		762AC7D41D7CB81100054680 /* NewCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCommentViewController.swift; sourceTree = "<group>"; };
+		762AC7D61D7CC78D00054680 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
+		762AC7D91D7CCAA600054680 /* CategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		762AC7DB1D7CCAC400054680 /* CategoriesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesViewCell.swift; sourceTree = "<group>"; };
+		762AC7DD1D7CCFB700054680 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		762AC7E01D7D21C700054680 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		762AC7E51D7D461500054680 /* InitialVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialVC.swift; sourceTree = "<group>"; };
 		BDFC1BB6E24375F5B11C571B /* Pods-ClickTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClickTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClickTest/Pods-ClickTest.debug.xcconfig"; sourceTree = "<group>"; };
 		F439636616A3AEDF21E5034D /* Pods_ClickTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClickTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -100,6 +118,10 @@
 		762117681D789C6F00618282 /* ClickTest */ = {
 			isa = PBXGroup;
 			children = (
+				762AC7E21D7D44C100054680 /* Launch */,
+				762AC7DF1D7D21B600054680 /* About */,
+				762AC7D81D7CCA9200054680 /* Categories */,
+				762AC7CE1D7CA40100054680 /* Comments */,
 				762AC7BA1D794F6D00054680 /* Detail */,
 				762AC7C91D7AA73800054680 /* Map */,
 				762AC7B51D792F8400054680 /* Menu */,
@@ -139,6 +161,8 @@
 			children = (
 				762AC7C11D79A67F00054680 /* Location.swift */,
 				762AC7C31D79ADC800054680 /* Business.swift */,
+				762AC7D11D7CA96E00054680 /* Comment.swift */,
+				762AC7DD1D7CCFB700054680 /* Category.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -165,6 +189,41 @@
 				762AC7CA1D7AA74700054680 /* MapViewController.swift */,
 			);
 			name = Map;
+			sourceTree = "<group>";
+		};
+		762AC7CE1D7CA40100054680 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				762AC7CF1D7CA41500054680 /* CommentsViewController.swift */,
+				762AC7D41D7CB81100054680 /* NewCommentViewController.swift */,
+				762AC7D61D7CC78D00054680 /* CommentsTableViewCell.swift */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
+		762AC7D81D7CCA9200054680 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				762AC7D91D7CCAA600054680 /* CategoriesViewController.swift */,
+				762AC7DB1D7CCAC400054680 /* CategoriesViewCell.swift */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		762AC7DF1D7D21B600054680 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				762AC7E01D7D21C700054680 /* AboutViewController.swift */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		762AC7E21D7D44C100054680 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				762AC7E51D7D461500054680 /* InitialVC.swift */,
+			);
+			name = Launch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,15 +355,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				762AC7CB1D7AA74700054680 /* MapViewController.swift in Sources */,
+				762AC7D51D7CB81100054680 /* NewCommentViewController.swift in Sources */,
 				762AC7BC1D794F7D00054680 /* DetailViewController.swift in Sources */,
 				762AC7C21D79A67F00054680 /* Location.swift in Sources */,
 				7621176C1D789C6F00618282 /* ViewController.swift in Sources */,
+				762AC7E61D7D461500054680 /* InitialVC.swift in Sources */,
+				762AC7DE1D7CCFB700054680 /* Category.swift in Sources */,
 				7621176A1D789C6F00618282 /* AppDelegate.swift in Sources */,
 				762AC7A71D78A05600054680 /* Network.swift in Sources */,
+				762AC7D71D7CC78D00054680 /* CommentsTableViewCell.swift in Sources */,
+				762AC7E11D7D21C700054680 /* AboutViewController.swift in Sources */,
 				762AC7AB1D78A09B00054680 /* Global.swift in Sources */,
 				762AC7B01D78DAE600054680 /* MainTableViewCell.swift in Sources */,
+				762AC7D21D7CA96E00054680 /* Comment.swift in Sources */,
+				762AC7DC1D7CCAC400054680 /* CategoriesViewCell.swift in Sources */,
+				762AC7D01D7CA41500054680 /* CommentsViewController.swift in Sources */,
 				762AC7A51D789FCC00054680 /* Constants.swift in Sources */,
 				762AC7C41D79ADC800054680 /* Business.swift in Sources */,
+				762AC7DA1D7CCAA600054680 /* CategoriesViewController.swift in Sources */,
 				762AC7B71D792F9500054680 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

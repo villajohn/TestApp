@@ -140,7 +140,7 @@ public class SideMenuManager {
         }
         didSet {
             guard oldValue?.presentingViewController == nil else {
-                print("SideMenu Warning: menuRightNavigationController cannot be modified while it's presented.")
+                //print("SideMenu Warning: menuRightNavigationController cannot be modified while it's presented.")
                 menuRightNavigationController = oldValue
                 return
             }
